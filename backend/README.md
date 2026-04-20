@@ -15,7 +15,10 @@ This backend integrates dialect detection and translation for Arabic text.
 
 ```bash
 cd backend
+# cd C:/Users/YOURUSERNAME/Documents/GitHub/Contextawarearabictranslator/backend
 pip install -r requirements.txt
+# be vigilant of errors
+
 ```
 
 **Note**: First installation will download the Helsinki-NLP model (~300MB). This is automatic.
