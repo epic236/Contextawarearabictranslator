@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router";
 import { useEffect } from "react";
+import bgImage from "./arabic_bg.jpg";
 
 export function TranslatorResult() {
   const location = useLocation();
@@ -26,14 +27,19 @@ export function TranslatorResult() {
     return null;
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 py-8">
-      <div className="w-full max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-3xl text-center mb-8 text-gray-800">
-          Translation Result
-        </h1>
+return (
+  <div className="min-h-screen relative bg-gradient-to-br from-blue-50 to-indigo-100 p-4 py-8 overflow-hidden">
+    <div
+      className="absolute inset-0 z-0 pointer-events-none opacity-5 bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${bgImage})` }}
+    />
+    <div className="relative z-10 w-full max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+      <h1 className="text-3xl text-center mb-8 text-gray-800">
+        Translation Result
+      </h1>
 
-        <div className="space-y-6">
+      <div className="space-y-6">
+        
           {/* Dialect Detection */}
           <div className="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded">
             <p className="text-sm text-gray-600 mb-1">Detected Dialect:</p>

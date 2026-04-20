@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import bgImage from "./arabic_bg.jpg";  
 
 export function TranslatorInput() {
   const [text, setText] = useState("");
@@ -48,8 +49,12 @@ export function TranslatorInput() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-8">
+    <div className="min-h-screen relative flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 overflow-hidden">
+    <div
+      className="absolute inset-0 z-0 pointer-events-none opacity-5 bg-cover bg-center bg-no-repeat"
+       style={{ backgroundImage: `url(${bgImage})` }}
+        />
+      <div className="relative z-10 w-full max-w-2xl bg-white rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
           <p className="text-6xl md:text-7xl font-black leading-none text-indigo-200/69 select-none mb-2">
             Ara Ara~
