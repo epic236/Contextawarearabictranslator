@@ -74,6 +74,17 @@ def get_dialect_confidence(text: str) -> dict:
     if vectorizer is None or model is None:
         raise ValueError("Models not loaded. Call load_models() first.")
 
+    if detect_dialect(text) == "NON_ARABIC":
+        dialect_probs = {
+            dialect: 0.0
+            for dialect in model.classes_
+        }
+        return {
+            'dialect': "NOT ARABIC",
+            'confidence': 1.0,
+            'all_probabilities': dialect_probs
+        }
+
     text_clean = normalize_arabic(text)
     text_vectorized = vectorizer.transform([text_clean])
 

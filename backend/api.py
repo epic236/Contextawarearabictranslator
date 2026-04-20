@@ -67,6 +67,7 @@ def dialect_aware_translate():
         # Step 1: Detect dialect with confidence scores
         dialect_info = get_dialect_confidence(text)
         dialect = dialect_info['dialect']
+        dialect_name = detect_dialect(text)
 
         # Step 2: Normalize dialect to MSA
         normalized_text, applied_rules = normalize_dialect(text, dialect)
@@ -78,20 +79,36 @@ def dialect_aware_translate():
         ambiguity_notes = get_ambiguity_notes(text)
 
         # Build response
-        return jsonify({
-            'input_text': text,
-            'detected_dialect': DIALECT_NAMES.get(dialect, dialect),
-            'dialect_code': dialect,
-            'confidence': dialect_info['confidence'],
-            'all_probabilities': {
-                DIALECT_NAMES.get(d, d): prob
-                for d, prob in dialect_info['all_probabilities'].items()
-            },
-            'normalized_text': normalized_text,
-            'applied_normalization_rules': applied_rules,
-            'translation': translation,
-            'ambiguities': ambiguity_notes
-        })
+        if dialect_name != "NON_ARABIC":
+            return jsonify({
+                'input_text': text,
+                'detected_dialect': DIALECT_NAMES.get(dialect, dialect),
+                'dialect_code': dialect,
+                'confidence': dialect_info['confidence'],
+                'all_probabilities': {
+                    DIALECT_NAMES.get(d, d): prob
+                    for d, prob in dialect_info['all_probabilities'].items()
+                },
+                'normalized_text': normalized_text,
+                'applied_normalization_rules': applied_rules,
+                'translation': translation,
+                'ambiguities': ambiguity_notes
+            })
+        else:
+            return jsonify({
+                'input_text': text,
+                'detected_dialect': "NOT ARABIC",
+                'dialect_code': "NOT ARABIC",
+                'confidence': 100,
+                'all_probabilities': {
+                    DIALECT_NAMES.get(d, d): prob
+                    for d, prob in dialect_info['all_probabilities'].items()
+                },
+                'normalized_text': normalized_text,
+                'applied_normalization_rules': applied_rules,
+                'translation': translation,
+                'ambiguities': ambiguity_notes
+            })
 
     except Exception as e:
         print(f"Translation error: {e}")
