@@ -11,21 +11,40 @@ export function TranslatorInput() {
 
     setIsLoading(true);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    try {
+      const response = await fetch('http://localhost:5000/translate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: text })
+      });
 
-    // Mock translation result
-    const dialects = ["Maghrebi", "Egyptian", "Gulf", "Levantine"];
-    const randomDialect = dialects[Math.floor(Math.random() * dialects.length)];
-    const mockTranslation = `This is a translated version of: ${text}`;
-
-    navigate("/result", {
-      state: {
-        dialect: randomDialect,
-        translation: mockTranslation,
-        originalText: text
+      if (!response.ok) {
+        throw new Error('Translation failed');
       }
-    });
+
+      const data = await response.json();
+
+      navigate("/result", {
+        state: {
+          inputText: data.input_text,
+          dialect: data.detected_dialect,
+          dialectCode: data.dialect_code,
+          confidence: data.confidence,
+          allProbabilities: data.all_probabilities,
+          normalizedText: data.normalized_text,
+          appliedRules: data.applied_normalization_rules,
+          translation: data.translation,
+          ambiguities: data.ambiguities
+        }
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Translation failed. Make sure the backend is running on http://localhost:5000\n\nSee console for details.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
